@@ -1,0 +1,13 @@
+Bootstrap: docker
+From: debian:12-slim
+
+%post
+    apt-get update && apt-get install -y --no-install-recommends ca-certificates wget unzip
+    mkdir -p /opt/blink
+    wget -O /opt/blink/blink_linux.zip https://raw.githubusercontent.com/Menggg/BLINK/master/blink_linux.zip
+    cd /opt/blink && unzip blink_linux.zip
+    install -m 0755 /opt/blink/blink_linux /usr/local/bin/blink
+    rm -rf /var/lib/apt/lists/* /opt/blink
+
+%runscript
+    exec blink "$@"
